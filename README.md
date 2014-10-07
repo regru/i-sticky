@@ -1,9 +1,9 @@
-** i-sticky
+## i-sticky
 
 "position: sticky" jQuery plugin / polyfill. Takes use of the [BEM](http://bem.info)-notation by default.
 Based on [position--sticky- polyfill](https://github.com/matthewp/position--sticky-) by Matthew Phillips.
 
-*** Limitations
+### Limitations
 
 * only vertical direction is supported
 * if native position:sticky support is detected, the plugin does nothing
@@ -12,7 +12,7 @@ Based on [position--sticky- polyfill](https://github.com/matthewp/position--stic
 * parent block of position:sticky element MUST have position different from static (f.e., relative is a good choice)
 
 
-*** Usage
+### Usage
 
 jQuery is required (tested with 1.8.3, should work with 1.7.0 or newer). Then write some JS:
 
@@ -44,19 +44,19 @@ You should write CSS rules by yourself, as you normally would. For example:
 }
 ```
 
-*** Configuration
+### Configuration
 
 * `holderClass` contains className for the placeholder element, that is created to hold original element's place. Default value is `i-sticky__holder`
 * `holderAutoHeight` when set true, the plugin will recalculate placeholder's height. Otherwise, your CSS should define it. Defaults to `false`.
 
-*** License
+### License
 
 MIT
 
-*** Examples
+### Examples
 
 [REG.COM domain checker](https://www.reg.com/choose/domain/?domains=position+sticky)
 
-*** Changelog
+### Changelog
 
 2014-10-08 1.0.0
