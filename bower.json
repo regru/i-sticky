@@ -1,0 +1,27 @@
+{
+  "name": "i-sticky",
+  "main": "i-sticky.js",
+  "version": "1.0.0",
+  "homepage": "https://github.com/podkot/i-sticky",
+  "authors": [
+    "podkot <podkot@gmail.com>"
+  ],
+  "description": "`position: sticky` jQuery plugin / polyfill",
+  "keywords": [
+    "css",
+    "polyfill",
+    "sticky",
+    "jquery"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": ">=1.7.0"
+  }
+}
