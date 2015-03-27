@@ -14,11 +14,26 @@
             window.webkitRequestAnimationFrame ||
             window.mozRequestAnimationFrame,
         slice = Array.prototype.slice,
-        toObserve = [];
+        stickyId = 0,
+        toObserve = [],
+        methods = {
+            unstick : function() {
+                var currentId = $(this).data('stickyId'),
+                    removeIndex;
 
-    $.fn.iSticky = function(){
-        return this;
-    };
+                for (var i = toObserve.length - 1; i >= 0; i--) {
+                    if ( toObserve[i].stickyId == currentId )
+                        removeIndex = i;
+                };
+
+                if ( typeof removeIndex !== 'undefined' )
+                    toObserve.splice(removeIndex, 1);
+
+                $(this).removeAttr('style');
+
+                return this;
+            }
+        };
 
     for (var i = 0, l = prefixTestList.length; i < l; i++) {
         stickyTestElement.setAttribute( 'style', 'position:' + prefixTestList[i] + 'sticky' );
@@ -28,64 +43,73 @@
         }
     }
 
-    $.fn.iSticky = function(o){
-        var options = $.extend({
-            holderClass:      'i-sticky__holder',
-            holderAutoHeight: false
-        }, o);
+    $.fn.iSticky = function(methodOrOptions){
+        if ( typeof methodOrOptions == 'string' && methods[methodOrOptions] )
+            return methods[ methodOrOptions ].apply( this, Array.prototype.slice.call( arguments, 1 ))
+        else {
+            var options = $.extend({
+                holderClass:      'i-sticky__holder',
+                holderAutoHeight: false
+            }, methodOrOptions);
 
-        return this.each(function(){
-            var $this    = $(this),
-                style    = '',
-                absStyle = '',
-                topCSSstring,
-                topCSS,
-                bottomCSSstring,
-                bottomCSS,
-                marginLeft = parseInt( $this.css('margin-left'), 10 );
+            return this.each(function(){
+                var $this    = $(this),
+                    style    = '',
+                    absStyle = '',
+                    topCSSstring,
+                    topCSS,
+                    bottomCSSstring,
+                    bottomCSS,
+                    marginLeft = parseInt( $this.css('margin-left'), 10 ),
+                    elStickyId = 'stycki_' + (++stickyId);
 
-            // 'auto' value workaround
-            // http://stackoverflow.com/questions/13455931/jquery-css-firefox-dont-return-auto-values
-            $this.hide();
+                // 'auto' value workaround
+                // http://stackoverflow.com/questions/13455931/jquery-css-firefox-dont-return-auto-values
+                $this.hide();
 
-            topCSSstring    = $this.css('top');
-            bottomCSSstring = $this.css('bottom');
+                topCSSstring    = $this.css('top');
+                bottomCSSstring = $this.css('bottom');
 
-            $this.show();
+                $this.show();
 
-            if ( topCSSstring !== 'auto' ) {
-                style  = 'top:' + topCSSstring + ';bottom:auto;';
-                oppositeStyle = 'top:auto;bottom:0;';
-                topCSS = parseInt( topCSSstring, 10 );
-            }
-            else if ( bottomCSSstring !== 'auto' ) {
-                style     = 'top:auto;bottom:' + bottomCSSstring + ';';
-                oppositeStyle = 'top:0;bottom:auto;';
-                bottomCSS = parseInt( bottomCSSstring, 10 );
-            }
-            else {
-                return;
-            }
+                if ( topCSSstring !== 'auto' ) {
+                    style  = 'top:' + topCSSstring + ';bottom:auto;';
+                    oppositeStyle = 'top:auto;bottom:0;';
+                    topCSS = parseInt( topCSSstring, 10 );
+                }
+                else if ( bottomCSSstring !== 'auto' ) {
+                    style     = 'top:auto;bottom:' + bottomCSSstring + ';';
+                    oppositeStyle = 'top:0;bottom:auto;';
+                    bottomCSS = parseInt( bottomCSSstring, 10 );
+                }
+                else {
+                    return;
+                }
 
-            $this.after('<span class="' + options.holderClass+ '" style="display:block;"></span>');
+                $this
+                    .data('stickyId', elStickyId)
+                    .after('<span class="' + options.holderClass+ '" style="display:block;"></span>');
 
-            toObserve.push({
-                style:            style,
-                oppositeStyle:    oppositeStyle,
-                topCSS:           topCSS,
-                bottomCSS:        bottomCSS,
-                el:               this,
-                parent:           this.parentElement,
-                fixed:            false,
-                holder:           this.nextSibling,
-                holderAutoHeight: options.holderAutoHeight,
-                marginLeft:       marginLeft,
-                height:           0,
-                init:             true
+                toObserve.push({
+                    style:            style,
+                    oppositeStyle:    oppositeStyle,
+                    topCSS:           topCSS,
+                    bottomCSS:        bottomCSS,
+                    el:               this,
+                    parent:           this.parentElement,
+                    fixed:            false,
+                    holder:           this.nextSibling,
+                    holderAutoHeight: options.holderAutoHeight,
+                    marginLeft:       marginLeft,
+                    height:           0,
+                    stickyId:         elStickyId,
+                    init:             true
+                });
+
+                updateScrollPos();
             });
+        }
 
-            updateScrollPos();
-        });
     };
 
     function getOffset(elem) {
