@@ -47,70 +47,69 @@
     $.fn.iSticky = function(methodOrOptions){
         if ( typeof methodOrOptions == 'string' && methods[methodOrOptions] )
             return methods[ methodOrOptions ].apply( this, Array.prototype.slice.call( arguments, 1 ))
-        else {
-            var options = $.extend({
-                holderClass:      'i-sticky__holder',
-                holderAutoHeight: false
-            }, methodOrOptions);
 
-            return this.each(function(){
-                var $this    = $(this),
-                    style    = '',
-                    absStyle = '',
-                    topCSSstring,
-                    topCSS,
-                    bottomCSSstring,
-                    bottomCSS,
-                    marginLeft = parseInt( $this.css('margin-left'), 10 ),
-                    elStickyId = 'stycki_' + (++stickyId);
+        var options = $.extend({
+            holderClass:      'i-sticky__holder',
+            holderAutoHeight: false
+        }, methodOrOptions);
 
-                // 'auto' value workaround
-                // http://stackoverflow.com/questions/13455931/jquery-css-firefox-dont-return-auto-values
-                $this.hide();
+        return this.each(function(){
+            var $this    = $(this),
+                style    = '',
+                absStyle = '',
+                topCSSstring,
+                topCSS,
+                bottomCSSstring,
+                bottomCSS,
+                marginLeft = parseInt( $this.css('margin-left'), 10 ),
+                elStickyId = 'stycki_' + (++stickyId);
 
-                topCSSstring    = $this.css('top');
-                bottomCSSstring = $this.css('bottom');
+            // 'auto' value workaround
+            // http://stackoverflow.com/questions/13455931/jquery-css-firefox-dont-return-auto-values
+            $this.hide();
 
-                $this.show();
+            topCSSstring    = $this.css('top');
+            bottomCSSstring = $this.css('bottom');
 
-                if ( topCSSstring !== 'auto' ) {
-                    style  = 'top:' + topCSSstring + ';bottom:auto;';
-                    oppositeStyle = 'top:auto;bottom:0;';
-                    topCSS = parseInt( topCSSstring, 10 );
-                }
-                else if ( bottomCSSstring !== 'auto' ) {
-                    style     = 'top:auto;bottom:' + bottomCSSstring + ';';
-                    oppositeStyle = 'top:0;bottom:auto;';
-                    bottomCSS = parseInt( bottomCSSstring, 10 );
-                }
-                else {
-                    return;
-                }
+            $this.show();
 
-                $this
-                    .data('stickyId', elStickyId)
-                    .after('<span class="' + options.holderClass+ '" style="display:block;"></span>');
+            if ( topCSSstring !== 'auto' ) {
+                style  = 'top:' + topCSSstring + ';bottom:auto;';
+                oppositeStyle = 'top:auto;bottom:0;';
+                topCSS = parseInt( topCSSstring, 10 );
+            }
+            else if ( bottomCSSstring !== 'auto' ) {
+                style     = 'top:auto;bottom:' + bottomCSSstring + ';';
+                oppositeStyle = 'top:0;bottom:auto;';
+                bottomCSS = parseInt( bottomCSSstring, 10 );
+            }
+            else {
+                return;
+            }
 
-                toObserve.push({
-                    style:            style,
-                    oppositeStyle:    oppositeStyle,
-                    topCSS:           topCSS,
-                    bottomCSS:        bottomCSS,
-                    el:               this,
-                    parent:           this.parentElement,
-                    fixed:            false,
-                    holder:           this.nextSibling,
-                    holderClass:      options.holderClass,
-                    holderAutoHeight: options.holderAutoHeight,
-                    marginLeft:       marginLeft,
-                    height:           0,
-                    stickyId:         elStickyId,
-                    init:             true
-                });
+            $this
+                .data('stickyId', elStickyId)
+                .after('<span class="' + options.holderClass+ '" style="display:block;"></span>');
 
-                updateScrollPos();
+            toObserve.push({
+                style:            style,
+                oppositeStyle:    oppositeStyle,
+                topCSS:           topCSS,
+                bottomCSS:        bottomCSS,
+                el:               this,
+                parent:           this.parentElement,
+                fixed:            false,
+                holder:           this.nextSibling,
+                holderClass:      options.holderClass,
+                holderAutoHeight: options.holderAutoHeight,
+                marginLeft:       marginLeft,
+                height:           0,
+                stickyId:         elStickyId,
+                init:             true
             });
-        }
+
+            updateScrollPos();
+        });
 
     };
 
