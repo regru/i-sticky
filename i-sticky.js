@@ -19,7 +19,8 @@
         methods = {
             unstick : function() {
                 var currentId = $(this).data('stickyId'),
-                    removeIndex;
+                    removeIndex,
+                    unstickEl;
 
                 for (var i = toObserve.length - 1; i >= 0; i--) {
                     if ( toObserve[i].stickyId == currentId )
@@ -27,9 +28,9 @@
                 };
 
                 if ( typeof removeIndex !== 'undefined' )
-                    toObserve.splice(removeIndex, 1);
+                    unstickEl = toObserve.splice(removeIndex, 1);
 
-                $(this).removeAttr('style');
+                $(this).removeAttr('style').next( '.' + unstickEl[0].holderClass ).remove();
 
                 return this;
             }
@@ -99,6 +100,7 @@
                     parent:           this.parentElement,
                     fixed:            false,
                     holder:           this.nextSibling,
+                    holderClass:      options.holderClass,
                     holderAutoHeight: options.holderAutoHeight,
                     marginLeft:       marginLeft,
                     height:           0,
