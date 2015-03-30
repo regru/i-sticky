@@ -30,7 +30,8 @@
                 if ( typeof removeIndex !== 'undefined' )
                     unstickEl = toObserve.splice(removeIndex, 1);
 
-                $(this).removeAttr('style').next( '.' + unstickEl[0].holderClass ).remove();
+                if ( typeof unstickEl !== 'undefined' )
+                    $(this).removeAttr('style').next( '.' + unstickEl[0].holderClass ).remove();
 
                 return this;
             }
