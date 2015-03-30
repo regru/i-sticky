@@ -37,6 +37,11 @@
             }
         };
 
+    // fix ff bug
+    $.fn.iSticky = function(){
+        return this;
+    };
+
     for (var i = 0, l = prefixTestList.length; i < l; i++) {
         stickyTestElement.setAttribute( 'style', 'position:' + prefixTestList[i] + 'sticky' );
 
