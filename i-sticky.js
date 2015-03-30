@@ -30,11 +30,17 @@
                 if ( typeof removeIndex !== 'undefined' )
                     unstickEl = toObserve.splice(removeIndex, 1);
 
-                $(this).removeAttr('style').next( '.' + unstickEl[0].holderClass ).remove();
+                if ( typeof unstickEl !== 'undefined' )
+                    $(this).removeAttr('style').next( '.' + unstickEl[0].holderClass ).remove();
 
                 return this;
             }
         };
+
+    // fix ff bug
+    $.fn.iSticky = function(){
+        return this;
+    };
 
     for (var i = 0, l = prefixTestList.length; i < l; i++) {
         stickyTestElement.setAttribute( 'style', 'position:' + prefixTestList[i] + 'sticky' );
