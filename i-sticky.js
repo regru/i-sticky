@@ -68,6 +68,8 @@
                 bottomCSSstring,
                 bottomCSS,
                 marginLeft = parseInt( $this.css('margin-left'), 10 ),
+                startElmOff = getOffset(this),
+                startElmOffTop = startElmOff !== null && startElmOff.top !== null ? startElmOff.top : 0,
                 elStickyId = 'stycki_' + (++stickyId);
 
             // 'auto' value workaround
@@ -102,6 +104,7 @@
                 oppositeStyle:    oppositeStyle,
                 topCSS:           topCSS,
                 bottomCSS:        bottomCSS,
+                startElmOffTop:   startElmOffTop,
                 el:               this,
                 parent:           this.parentElement,
                 fixed:            false,
@@ -186,7 +189,7 @@
                 opposite;
 
             if ( typeof item.topCSS !== 'undefined' ) {
-                start  = parOffTop - item.topCSS;
+                start  = item.startElmOffTop;
                 end    = parOffTop + item.parent.offsetHeight - height - item.topCSS;
 
                 fix      = scrollTop > start && scrollTop < end;
@@ -197,7 +200,7 @@
                 var scrollBottom = scrollTop + windowHeight;
 
                 start  = parOffTop + height - item.bottomCSS;
-                end    = parOffTop + item.parent.offsetHeight - item.bottomCSS;
+                end    = item.startElmOffTop + height;
 
                 fix      = scrollBottom > start && scrollBottom < end;
                 home     = scrollBottom >= end;
