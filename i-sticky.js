@@ -37,7 +37,7 @@
             }
         };
 
-    // fix ff bug
+    // for native support
     $.fn.iSticky = function(){
         return this;
     };
@@ -210,7 +210,7 @@
             var margin = 'margin-left:-' + ( scrollLeft - item.marginLeft ) + 'px',
                 fixCSS      = item.style + 'position:fixed;' + margin,
                 oppositeCSS = item.oppositeStyle + 'position:absolute;',
-                homeCSS     = item.style + 'position:absolute;';
+                homeCSS     = item.style;
 
             if ( item.holderAutoHeight && height != item.height ) {
                 item.holder.setAttribute( 'style', 'display:block;height:' + height + 'px;' );
@@ -233,6 +233,8 @@
                     item.fixed = false;
                 }
             }
+
+            item.holder.style.display = (item.fixed === false ? 'none' : 'block');
 
             if ( item.init ) {
                 delete item.init;
