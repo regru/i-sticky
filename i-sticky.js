@@ -68,8 +68,6 @@
                 bottomCSSstring,
                 bottomCSS,
                 marginLeft = parseInt( $this.css('margin-left'), 10 ),
-                startElmOff = getOffset(this),
-                startElmOffTop = startElmOff !== null && startElmOff.top !== null ? startElmOff.top : 0,
                 elStickyId = 'stycki_' + (++stickyId);
 
             // 'auto' value workaround
@@ -97,14 +95,13 @@
 
             $this
                 .data('stickyId', elStickyId)
-                .after('<span class="' + options.holderClass+ '" style="display:block;"></span>');
+                .after('<span class="' + options.holderClass+ '" style="display:none;"></span>');
 
             toObserve.push({
                 style:            style,
                 oppositeStyle:    oppositeStyle,
                 topCSS:           topCSS,
                 bottomCSS:        bottomCSS,
-                startElmOffTop:   startElmOffTop,
                 el:               this,
                 parent:           this.parentElement,
                 fixed:            false,
@@ -165,6 +162,23 @@
         };
     }
 
+    function getHomeOffset(item) {
+        var homeElmOff;
+        if ( item.holder.style.display == 'block' )
+            homeElmOff = getOffset( item.holder );
+        else
+            homeElmOff = getOffset( item.el );
+
+        var homeElmOffTop = homeElmOff !== null && homeElmOff.top !== null ? homeElmOff.top : 0,
+            homeElmOffLeft = homeElmOff !== null && homeElmOff.left !== null ? homeElmOff.left : 0;
+
+        return {
+            top: homeElmOffTop,
+            left: homeElmOffLeft
+        };
+
+    }
+
     function setPositions() {
         var scrollTop    = lastKnownScrollTop,
             scrollLeft   = window.pageXOffset || document.documentElement.scrollLeft,
@@ -179,9 +193,7 @@
 
                 parOff    = getOffset(item.parent),
                 parOffTop = ((parOff !== null && parOff.top !== null) ? parOff.top : 0),
-                elmOff    = getOffset(item.el),
-                elmOffTop = ((elmOff !== null && elmOff.top !== null) ? elmOff.top : 0),
-
+                elmHomeOff = getHomeOffset(item),
                 start,
                 end,
                 fix,
@@ -189,7 +201,7 @@
                 opposite;
 
             if ( typeof item.topCSS !== 'undefined' ) {
-                start  = item.startElmOffTop;
+                start  = elmHomeOff.top - item.topCSS;
                 end    = parOffTop + item.parent.offsetHeight - height - item.topCSS;
 
                 fix      = scrollTop > start && scrollTop < end;
@@ -200,7 +212,7 @@
                 var scrollBottom = scrollTop + windowHeight;
 
                 start  = parOffTop + height - item.bottomCSS;
-                end    = item.startElmOffTop + height;
+                end    = elmHomeOff.top + height - item.bottomCSS;
 
                 fix      = scrollBottom > start && scrollBottom < end;
                 home     = scrollBottom >= end;
@@ -210,7 +222,7 @@
                 continue;
             }
 
-            var margin = 'margin-left:-' + ( scrollLeft - item.marginLeft ) + 'px',
+            var margin = 'margin-left:-' + ( scrollLeft - item.marginLeft ) + 'px;',
                 fixCSS      = item.style + 'position:fixed;' + margin,
                 oppositeCSS = item.oppositeStyle + 'position:absolute;',
                 homeCSS     = item.style;
@@ -237,7 +249,7 @@
                 }
             }
 
-            item.holder.style.display = (item.fixed === false ? 'none' : 'block');
+            item.holder.style.display = ( item.fixed === false && !opposite ? 'none' : 'block' );
 
             if ( item.init ) {
                 delete item.init;
