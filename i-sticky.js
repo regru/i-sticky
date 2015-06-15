@@ -25,7 +25,7 @@
                 for (var i = toObserve.length - 1; i >= 0; i--) {
                     if ( toObserve[i].stickyId == currentId )
                         removeIndex = i;
-                };
+                }
 
                 if ( typeof removeIndex !== 'undefined' )
                     unstickEl = toObserve.splice(removeIndex, 1);
@@ -52,7 +52,7 @@
 
     $.fn.iSticky = function(methodOrOptions){
         if ( typeof methodOrOptions == 'string' && methods[methodOrOptions] )
-            return methods[ methodOrOptions ].apply( this, Array.prototype.slice.call( arguments, 1 ))
+            return methods[ methodOrOptions ].apply( this, Array.prototype.slice.call( arguments, 1 ));
 
         var options = $.extend({
             holderClass:      'i-sticky__holder',
@@ -250,6 +250,7 @@
             }
 
             item.holder.style.display = ( item.fixed === false && !opposite ? 'none' : 'block' );
+            item.el.style.minWidth = ( item.fixed === false && !opposite ? 'auto' : item.holder.offsetWidth + 'px' );
 
             if ( item.init ) {
                 delete item.init;
