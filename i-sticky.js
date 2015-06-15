@@ -25,7 +25,7 @@
                 for (var i = toObserve.length - 1; i >= 0; i--) {
                     if ( toObserve[i].stickyId == currentId )
                         removeIndex = i;
-                };
+                }
 
                 if ( typeof removeIndex !== 'undefined' )
                     unstickEl = toObserve.splice(removeIndex, 1);
@@ -37,7 +37,7 @@
             }
         };
 
-    // fix ff bug
+    // for native support
     $.fn.iSticky = function(){
         return this;
     };
@@ -52,7 +52,7 @@
 
     $.fn.iSticky = function(methodOrOptions){
         if ( typeof methodOrOptions == 'string' && methods[methodOrOptions] )
-            return methods[ methodOrOptions ].apply( this, Array.prototype.slice.call( arguments, 1 ))
+            return methods[ methodOrOptions ].apply( this, Array.prototype.slice.call( arguments, 1 ));
 
         var options = $.extend({
             holderClass:      'i-sticky__holder',
@@ -95,7 +95,7 @@
 
             $this
                 .data('stickyId', elStickyId)
-                .after('<span class="' + options.holderClass+ '" style="display:block;"></span>');
+                .after('<span class="' + options.holderClass+ '" style="display:none;"></span>');
 
             toObserve.push({
                 style:            style,
@@ -162,6 +162,23 @@
         };
     }
 
+    function getHomeOffset(item) {
+        var homeElmOff;
+        if ( item.holder.style.display == 'block' )
+            homeElmOff = getOffset( item.holder );
+        else
+            homeElmOff = getOffset( item.el );
+
+        var homeElmOffTop = homeElmOff !== null && homeElmOff.top !== null ? homeElmOff.top : 0,
+            homeElmOffLeft = homeElmOff !== null && homeElmOff.left !== null ? homeElmOff.left : 0;
+
+        return {
+            top: homeElmOffTop,
+            left: homeElmOffLeft
+        };
+
+    }
+
     function setPositions() {
         var scrollTop    = lastKnownScrollTop,
             scrollLeft   = window.pageXOffset || document.documentElement.scrollLeft,
@@ -176,9 +193,7 @@
 
                 parOff    = getOffset(item.parent),
                 parOffTop = ((parOff !== null && parOff.top !== null) ? parOff.top : 0),
-                elmOff    = getOffset(item.el),
-                elmOffTop = ((elmOff !== null && elmOff.top !== null) ? elmOff.top : 0),
-
+                elmHomeOff = getHomeOffset(item),
                 start,
                 end,
                 fix,
@@ -186,7 +201,7 @@
                 opposite;
 
             if ( typeof item.topCSS !== 'undefined' ) {
-                start  = parOffTop - item.topCSS;
+                start  = elmHomeOff.top - item.topCSS;
                 end    = parOffTop + item.parent.offsetHeight - height - item.topCSS;
 
                 fix      = scrollTop > start && scrollTop < end;
@@ -197,7 +212,7 @@
                 var scrollBottom = scrollTop + windowHeight;
 
                 start  = parOffTop + height - item.bottomCSS;
-                end    = parOffTop + item.parent.offsetHeight - item.bottomCSS;
+                end    = elmHomeOff.top + height - item.bottomCSS;
 
                 fix      = scrollBottom > start && scrollBottom < end;
                 home     = scrollBottom >= end;
@@ -207,10 +222,10 @@
                 continue;
             }
 
-            var margin = 'margin-left:-' + ( scrollLeft - item.marginLeft ) + 'px',
+            var margin = 'margin-left:-' + ( scrollLeft - item.marginLeft ) + 'px;',
                 fixCSS      = item.style + 'position:fixed;' + margin,
                 oppositeCSS = item.oppositeStyle + 'position:absolute;',
-                homeCSS     = item.style + 'position:absolute;';
+                homeCSS     = item.style;
 
             if ( item.holderAutoHeight && height != item.height ) {
                 item.holder.setAttribute( 'style', 'display:block;height:' + height + 'px;' );
@@ -233,6 +248,9 @@
                     item.fixed = false;
                 }
             }
+
+            item.holder.style.display = ( item.fixed === false && !opposite ? 'none' : 'block' );
+            item.el.style.minWidth = ( item.fixed === false && !opposite ? 'auto' : item.holder.offsetWidth + 'px' );
 
             if ( item.init ) {
                 delete item.init;
