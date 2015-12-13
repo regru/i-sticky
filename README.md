@@ -44,6 +44,14 @@ You should write CSS rules by yourself, as you normally would. For example:
 }
 ```
 
+### Methods
+
+Remove sticky style
+
+```js
+$('.i-sticky').iSticky('unstick');
+```
+
 ### Configuration
 
 * `holderClass` contains className for the placeholder element, that is created to hold original element's place. Default value is `i-sticky__holder`

@@ -14,8 +14,30 @@
             window.webkitRequestAnimationFrame ||
             window.mozRequestAnimationFrame,
         slice = Array.prototype.slice,
-        toObserve = [];
+        stickyId = 0,
+        toObserve = [],
+        methods = {
+            unstick : function() {
+                var currentId = $(this).data('stickyId'),
+                    removeIndex,
+                    unstickEl;
 
+                for (var i = toObserve.length - 1; i >= 0; i--) {
+                    if ( toObserve[i].stickyId == currentId )
+                        removeIndex = i;
+                }
+
+                if ( typeof removeIndex !== 'undefined' )
+                    unstickEl = toObserve.splice(removeIndex, 1);
+
+                if ( typeof unstickEl !== 'undefined' )
+                    $(this).removeAttr('style').next( '.' + unstickEl[0].holderClass ).remove();
+
+                return this;
+            }
+        };
+
+    // for native support
     $.fn.iSticky = function(){
         return this;
     };
@@ -28,11 +50,14 @@
         }
     }
 
-    $.fn.iSticky = function(o){
+    $.fn.iSticky = function(methodOrOptions){
+        if ( typeof methodOrOptions == 'string' && methods[methodOrOptions] )
+            return methods[ methodOrOptions ].apply( this, Array.prototype.slice.call( arguments, 1 ));
+
         var options = $.extend({
             holderClass:      'i-sticky__holder',
             holderAutoHeight: false
-        }, o);
+        }, methodOrOptions);
 
         return this.each(function(){
             var $this    = $(this),
@@ -42,7 +67,8 @@
                 topCSS,
                 bottomCSSstring,
                 bottomCSS,
-                marginLeft = parseInt( $this.css('margin-left'), 10 );
+                marginLeft = parseInt( $this.css('margin-left'), 10 ),
+                elStickyId = 'stycki_' + (++stickyId);
 
             // 'auto' value workaround
             // http://stackoverflow.com/questions/13455931/jquery-css-firefox-dont-return-auto-values
@@ -67,7 +93,9 @@
                 return;
             }
 
-            $this.after('<span class="' + options.holderClass+ '" style="display:block;"></span>');
+            $this
+                .data('stickyId', elStickyId)
+                .after('<span class="' + options.holderClass+ '" style="display:none;"></span>');
 
             toObserve.push({
                 style:            style,
@@ -78,14 +106,17 @@
                 parent:           this.parentElement,
                 fixed:            false,
                 holder:           this.nextSibling,
+                holderClass:      options.holderClass,
                 holderAutoHeight: options.holderAutoHeight,
                 marginLeft:       marginLeft,
                 height:           0,
+                stickyId:         elStickyId,
                 init:             true
             });
 
             updateScrollPos();
         });
+
     };
 
     function getOffset(elem) {
@@ -131,6 +162,23 @@
         };
     }
 
+    function getHomeOffset(item) {
+        var homeElmOff;
+        if ( item.holder.style.display == 'block' )
+            homeElmOff = getOffset( item.holder );
+        else
+            homeElmOff = getOffset( item.el );
+
+        var homeElmOffTop = homeElmOff !== null && homeElmOff.top !== null ? homeElmOff.top : 0,
+            homeElmOffLeft = homeElmOff !== null && homeElmOff.left !== null ? homeElmOff.left : 0;
+
+        return {
+            top: homeElmOffTop,
+            left: homeElmOffLeft
+        };
+
+    }
+
     function setPositions() {
         var scrollTop    = lastKnownScrollTop,
             scrollLeft   = window.pageXOffset || document.documentElement.scrollLeft,
@@ -145,9 +193,7 @@
 
                 parOff    = getOffset(item.parent),
                 parOffTop = ((parOff !== null && parOff.top !== null) ? parOff.top : 0),
-                elmOff    = getOffset(item.el),
-                elmOffTop = ((elmOff !== null && elmOff.top !== null) ? elmOff.top : 0),
-
+                elmHomeOff = getHomeOffset(item),
                 start,
                 end,
                 fix,
@@ -155,7 +201,7 @@
                 opposite;
 
             if ( typeof item.topCSS !== 'undefined' ) {
-                start  = parOffTop - item.topCSS;
+                start  = elmHomeOff.top - item.topCSS;
                 end    = parOffTop + item.parent.offsetHeight - height - item.topCSS;
 
                 fix      = scrollTop > start && scrollTop < end;
@@ -166,7 +212,7 @@
                 var scrollBottom = scrollTop + windowHeight;
 
                 start  = parOffTop + height - item.bottomCSS;
-                end    = parOffTop + item.parent.offsetHeight - item.bottomCSS;
+                end    = elmHomeOff.top + height - item.bottomCSS;
 
                 fix      = scrollBottom > start && scrollBottom < end;
                 home     = scrollBottom >= end;
@@ -176,10 +222,10 @@
                 continue;
             }
 
-            var margin = 'margin-left:-' + ( scrollLeft - item.marginLeft ) + 'px',
+            var margin = 'margin-left:-' + ( scrollLeft - item.marginLeft ) + 'px;',
                 fixCSS      = item.style + 'position:fixed;' + margin,
                 oppositeCSS = item.oppositeStyle + 'position:absolute;',
-                homeCSS     = item.style + 'position:absolute;';
+                homeCSS     = item.style;
 
             if ( item.holderAutoHeight && height != item.height ) {
                 item.holder.setAttribute( 'style', 'display:block;height:' + height + 'px;' );
@@ -202,6 +248,9 @@
                     item.fixed = false;
                 }
             }
+
+            item.holder.style.display = ( item.fixed === false && !opposite ? 'none' : 'block' );
+            item.el.style.minWidth = ( item.fixed === false && !opposite ? 'auto' : item.holder.offsetWidth + 'px' );
 
             if ( item.init ) {
                 delete item.init;
