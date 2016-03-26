@@ -73,7 +73,8 @@
         var options = $.extend({
                 holderClass      : 'i-sticky__holder',
                 holderAutoHeight : true,
-                debug            : false
+                debug            : false,
+                fixWidth         : false
             }, methodOrOptions),
             selector = this.selector;
 
@@ -125,6 +126,7 @@
                 options : {
                     holderClass      : options.holderClass,
                     holderAutoHeight : options.holderAutoHeight,
+                    fixWidth         : options.fixWidth
                 }
             }
 
@@ -242,7 +244,13 @@
             }
 
             style += 'margin-left:-' + ( scrollLeft - item.style.margin.left ) + 'px;';
-            style += 'min-width:' + ( isSticked ? item.holder.offsetWidth + 'px;' : 'auto;' );
+
+            if ( item.options.fixWidth ) {
+                style += 'width:' + ( isSticked ? item.holder.offsetWidth + 'px;' : 'auto;' );
+            }
+            else {
+                style += 'min-width:' + ( isSticked ? item.holder.offsetWidth + 'px;' : 'auto;' );
+            }
 
             if ( style !== item.style.current ) {
                 item.el.setAttribute( 'style', style );
