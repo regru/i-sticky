@@ -1,7 +1,7 @@
 {
   "name": "i-sticky",
   "main": "i-sticky.js",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "homepage": "https://github.com/podkot/i-sticky",
   "authors": [
     "podkot <podkot@gmail.com>",
