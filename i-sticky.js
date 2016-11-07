@@ -1,9 +1,9 @@
-/*!
+/* !
  * "position: sticky" jQuery plugin / polyfill
  * https://github.com/podkot/i-sticky
  * License: MIT
  */
-(function ($) {
+( function( $ ) {
     var prefixTestList       = [ '', '-webkit-', '-ms-', '-moz-', '-o-' ],
         stickyTestElement    = document.createElement('div'),
 
@@ -19,44 +19,42 @@
             || window.mozRequestAnimationFrame,
         id        = 0,
         stickies  = [],
-        methods   = {
-            unstick : function() {
-                var currentId = $(this).data('sticky-id'),
-                    removeIndex,
-                    el;
+        methods   = { unstick : function() {
+            var currentId = $( this ).data('sticky-id'),
+                removeIndex,
+                el;
 
-                for ( var i = stickies.length - 1; i >= 0; i-- ) {
-                    if ( stickies[i].id == currentId ) {
-                        removeIndex = i;
-                        break;
-                    }
+            for ( var i = stickies.length - 1; i >= 0; i-- ) {
+                if ( stickies[i].id == currentId ) {
+                    removeIndex = i;
+                    break;
                 }
+            }
 
-                if ( typeof removeIndex !== 'undefined' ) {
-                    el = stickies.splice( removeIndex, 1 );
-                }
+            if ( typeof removeIndex !== 'undefined' ) {
+                el = stickies.splice( removeIndex, 1 );
+            }
 
-                if ( typeof el !== 'undefined' ) {
-                    $(this)
+            if ( typeof el !== 'undefined' ) {
+                $( this )
                         .removeAttr('style')
                         .next( '.' + el[0].options.holderClass )
                             .remove();
-                }
-
-                return this;
             }
-        };
+
+            return this;
+        } };
 
     for ( var i = 0, l = prefixTestList.length; i < l; i++ ) {
         stickyTestElement.setAttribute( 'style', 'position:' + prefixTestList[i] + 'sticky' );
 
-        if (stickyTestElement.style.position !== '') {
+        if ( stickyTestElement.style.position !== '' ) {
             hasNativeSupport = true;
             break;
         }
     }
 
-    $.fn.iSticky = function(methodOrOptions) {
+    $.fn.iSticky = function( methodOrOptions ) {
         if ( hasNativeSupport ) {
             if ( typeof methodOrOptions === 'object' && methodOrOptions.force ) {
                 attachWindowEvents();
@@ -70,17 +68,15 @@
             return methods[ methodOrOptions ].apply( this, Array.prototype.slice.call( arguments, 1 ) );
         }
 
-        var options = $.extend({
+        var options = $.extend( {
                 holderClass      : 'i-sticky__holder',
                 holderAutoHeight : true,
                 debug            : false,
-                fixWidth         : false
-            }, methodOrOptions),
+            }, methodOrOptions ),
             selector = this.selector;
 
-
-        return this.each(function(){
-            var $this = $(this),
+        return this.each( function() {
+            var $this = $( this ),
                 id    = 'sticky-' + ++id,
                 topCSSstring,
                 bottomCSSstring,
@@ -95,7 +91,7 @@
 
             $this.show();
 
-            if ( ! topCSSstring && ! bottomCSSstring ) {
+            if ( !topCSSstring && !bottomCSSstring ) {
                 if ( options.debug ) {
                     console.warn( 'i-sticky: element `top` or `bottom` properties must be set in pixels', selector, this );
                 }
@@ -104,37 +100,36 @@
             }
 
             $this
-                .data('sticky-id', id)
-                .after('<span class="' + options.holderClass+ '" style="display:none;"></span>');
+                .data( 'sticky-id', id )
+                .after( '<span class="' + options.holderClass + '" style="display:none;"></span>' );
 
             item = {
-                id        : id,
-                el        : this,
-                parent    : this.parentElement,
-                holder    : this.nextSibling,
-                style : {
+                id     : id,
+                el     : this,
+                parent : this.parentElement,
+                holder : this.nextSibling,
+                style  : {
                     home      : 'position:relative;top:' + topCSSstring + ';bottom:' + bottomCSSstring + ';',
                     top       : undefined,
                     bottom    : undefined,
                     current   : '',
                     height    : 0,
                     isSticked : false,
-                    margin    : {
-                        left  : parseInt( $this.css('margin-left'), 10 )
-                    },
+                    margin    : { left: parseInt( $this.css('margin-left'), 10 ) },
                 },
                 options : {
                     holderClass      : options.holderClass,
                     holderAutoHeight : options.holderAutoHeight,
-                    fixWidth         : options.fixWidth
-                }
-            }
+                    className        : this.className,
+                    isStickedClass   : options.isStickedClass || '',
+                },
+            };
 
             if ( topCSSstring !== 'auto' ) {
                 item.style.top = {
                     fixed    : 'position:fixed;top:' + topCSSstring + ';bottom:auto;',
                     opposite : 'position:absolute;bottom:0;top:auto;',
-                    px       : parseInt( topCSSstring, 10 )
+                    px       : parseInt( topCSSstring, 10 ),
                 };
             }
 
@@ -142,7 +137,7 @@
                 item.style.bottom = {
                     fixed    : 'position:fixed;bottom:' + bottomCSSstring + ';top:auto;',
                     opposite : 'position:absolute;top:0;bottom:auto;',
-                    px       : parseInt( bottomCSSstring, 10 )
+                    px       : parseInt( bottomCSSstring, 10 ),
                 };
             }
 
@@ -150,11 +145,11 @@
             stickies.push( item );
 
             updateScrollPos();
-        });
+        } );
 
     };
 
-    function getOffset(elem) {
+    function getOffset( elem ) {
         var docElem,
             body,
             win,
@@ -164,37 +159,38 @@
             scrollLeft,
             box = {
                 top  : 0,
-                left : 0
+                left : 0,
             },
             doc = elem && elem.ownerDocument;
 
-        if ( ! doc ) {
+        if ( !doc ) {
             throw new Error('i-sticky: no element.ownerDocument defined');
+
             return;
         }
 
         if ( ( body = doc.body ) === elem ) {
             return {
                 top  : body.offsetTop,
-                left : body.offsetLeft
+                left : body.offsetLeft,
             };
         }
 
         docElem = doc.documentElement;
 
-        if ( typeof elem.getBoundingClientRect !== "undefined" ) {
+        if ( typeof elem.getBoundingClientRect !== 'undefined' ) {
             box = elem.getBoundingClientRect();
         }
 
         win        = window;
-        clientTop  = docElem.clientTop  || body.clientTop  || 0;
+        clientTop  = docElem.clientTop || body.clientTop || 0;
         clientLeft = docElem.clientLeft || body.clientLeft || 0;
-        scrollTop  = win.pageYOffset    || docElem.scrollTop;
-        scrollLeft = win.pageXOffset    || docElem.scrollLeft;
+        scrollTop  = win.pageYOffset || docElem.scrollTop;
+        scrollLeft = win.pageXOffset || docElem.scrollLeft;
 
         return {
-            top  : box.top  + scrollTop  - clientTop,
-            left : box.left + scrollLeft - clientLeft
+            top  : box.top + scrollTop - clientTop,
+            left : box.left + scrollLeft - clientLeft,
         };
     }
 
@@ -218,10 +214,12 @@
                     home         : homeOffset.top - topPx,
                     under        : parentOffset.top + item.parent.offsetHeight - height - topPx,
                     parentBottom : parentOffset.top + height - bottomPx,
-                    homeBottom   : homeOffset.top + height - bottomPx
+                    homeBottom   : homeOffset.top + height - bottomPx,
                 },
                 style        = item.style.home,
                 isSticked    = true;
+
+            item.el.className = item.options.className;
 
             if ( item.style.bottom && scrollBottom <= points.parentBottom ) {
                 style = item.style.bottom.opposite;
@@ -241,16 +239,14 @@
 
             if ( item.style.isSticked !== isSticked ) {
                 item.holder.style.display = isSticked ? 'block' : 'none';
+
+                if ( isSticked ) {
+                    item.el.className += ' ' + item.options.isStickedClass;
+                }
             }
 
             style += 'margin-left:-' + ( scrollLeft - item.style.margin.left ) + 'px;';
-
-            if ( item.options.fixWidth ) {
-                style += 'width:' + ( isSticked ? item.holder.offsetWidth + 'px;' : 'auto;' );
-            }
-            else {
-                style += 'min-width:' + ( isSticked ? item.holder.offsetWidth + 'px;' : 'auto;' );
-            }
+            style += 'min-width:' + ( isSticked ? item.holder.offsetWidth + 'px;' : 'auto;' );
 
             if ( style !== item.style.current ) {
                 item.el.setAttribute( 'style', style );
@@ -268,16 +264,17 @@
     }
 
     var timeout;
+
     // Debounced scroll handling
     function updateScrollPos() {
-        if ( ! stickies.length ) {
+        if ( !stickies.length ) {
             return;
         }
 
         lastKnownScrollTop = document.documentElement.scrollTop || document.body.scrollTop;
 
         // Only trigger a layout change if we’re not already waiting for one
-        if ( ! isAnimationRequested ) {
+        if ( !isAnimationRequested ) {
             isAnimationRequested = true;
 
             // Don’t update until next animation frame if we can, otherwise use a
@@ -300,16 +297,16 @@
             return;
         }
 
-        $(window)
-            .on('scroll', updateScrollPos)
-            .on('resize', updateScrollPos);
+        $( window )
+            .on( 'scroll', updateScrollPos )
+            .on( 'resize', updateScrollPos );
 
         updateScrollPos();
         areWindowEventsAttached = true;
     }
 
-    if ( ! hasNativeSupport ) {
+    if ( !hasNativeSupport ) {
         attachWindowEvents();
     }
 
-})(jQuery);
+} )( jQuery );
