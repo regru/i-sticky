@@ -112,6 +112,7 @@ MIT
 
 - [@podkot](https://github.com/podkot/)
 - [@anagami](https://github.com/anagami/)
+- [@DesTincT](https://github.com/destinct/)
 - Initially based on [position--sticky- polyfill](https://github.com/matthewp/position--sticky-) by Matthew Phillips.
 
 
@@ -124,6 +125,7 @@ MIT
 <a name="changelog"></a>
 ## Changelog
 
+- 2016-11-07 2.2.1 fixes
 - 2016-11-07 2.2.0 `stuckClass` option.
 - 2016-03-26 2.1.0 `fixWidth` option.
 - 2015-12-14 2.0.0 Rewritten to support both `top` & `bottom` at the same time. New `force` and `debug` options. `holderAutoHeight` defaults to `true`.
