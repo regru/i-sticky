@@ -121,7 +121,7 @@
                     holderClass      : options.holderClass,
                     holderAutoHeight : options.holderAutoHeight,
                     className        : this.className,
-                    isStickedClass   : options.isStickedClass || '',
+                    stuckClass       : options.stuckClass || '',
                 },
             };
 
@@ -241,7 +241,7 @@
                 item.holder.style.display = isSticked ? 'block' : 'none';
 
                 if ( isSticked ) {
-                    item.el.className += ' ' + item.options.isStickedClass;
+                    item.el.className += ' ' + item.options.stuckClass;
                 }
             }
 
