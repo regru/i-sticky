@@ -71,6 +71,7 @@ $('.i-sticky').iSticky('unstick');
 - `force`: applies the plugin even if the browser has native position:sticky support. May be useful for testing.
 - `debug`: writes some info to browser's console.
 - `fixWidth`: copies parent's width.
+- `isStickedClass`: class added when sticked
 
 Example with options:
 
@@ -123,6 +124,7 @@ MIT
 <a name="changelog"></a>
 ## Changelog
 
+- 2016-11-07 2.2.0 `isStickedClass` option.
 - 2016-03-26 2.1.0 `fixWidth` option.
 - 2015-12-14 2.0.0 Rewritten to support both `top` & `bottom` at the same time. New `force` and `debug` options. `holderAutoHeight` defaults to `true`.
 - 2015-06-15 1.1.8 Min-width issue. By @anagami.
