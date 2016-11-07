@@ -120,7 +120,6 @@
                 options : {
                     holderClass      : options.holderClass,
                     holderAutoHeight : options.holderAutoHeight,
-                    className        : this.className,
                     stuckClass       : options.stuckClass || '',
                 },
             };
@@ -203,23 +202,32 @@
         isAnimationRequested = false;
 
         for ( var i = 0, l = stickies.length; i < l; i++ ) {
-            var item         = stickies[i],
-                height       = item.el.offsetHeight,
-                parentOffset = getOffset( item.parent ),
-                homeOffset   = item.style.isSticked ? getOffset( item.holder ) : getOffset( item.el ),
-                topPx        = item.style.top ? item.style.top.px : 0,
-                bottomPx     = item.style.bottom ? item.style.bottom.px : 0,
-                points       = {
-                    parent       : parentOffset.top,
-                    home         : homeOffset.top - topPx,
-                    under        : parentOffset.top + item.parent.offsetHeight - height - topPx,
-                    parentBottom : parentOffset.top + height - bottomPx,
-                    homeBottom   : homeOffset.top + height - bottomPx,
-                },
-                style        = item.style.home,
-                isSticked    = true;
+                var item         = stickies[i],
+                    height       = item.el.offsetHeight,
+                    parentOffset = getOffset( item.parent ),
+                    homeOffset   = item.style.isSticked ? getOffset( item.holder ) : getOffset( item.el ),
+                    topPx        = item.style.top ? item.style.top.px : 0,
+                    bottomPx     = item.style.bottom ? item.style.bottom.px : 0,
 
-            item.el.className = item.options.className;
+                    style        = item.style.home,
+                    isSticked    = true,
+                    classes      = item.el.className.split(' '),
+                    index        = 0,
+                    points       = {
+                        parent       : parentOffset.top,
+                        home         : homeOffset.top - topPx,
+                        under        : parentOffset.top + item.parent.offsetHeight - height - topPx,
+                        parentBottom : parentOffset.top + height - bottomPx,
+                        homeBottom   : homeOffset.top + height - bottomPx,
+                    };
+
+            for ( index in classes ) {
+                if ( classes[index] === item.options.stuckClass ) {
+                    classes.splice( index, 1 );
+                }
+            }
+
+            item.el.className = classes.join(' ');
 
             if ( item.style.bottom && scrollBottom <= points.parentBottom ) {
                 style = item.style.bottom.opposite;
