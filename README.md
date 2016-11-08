@@ -106,8 +106,8 @@ $('.i-sticky').iSticky({
 
 MIT
 
-Copyright (c) 2014 Sergey Ermakov
-Copyright (c) 2016 REG.RU LLC
+- Copyright (c) 2014 Sergey Ermakov
+- Copyright (c) 2016 REG.RU LLC
 
 
 <a name="contributors"></a>
