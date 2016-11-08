@@ -247,10 +247,10 @@
 
             if ( item.style.isSticked !== isSticked ) {
                 item.holder.style.display = isSticked ? 'block' : 'none';
+            }
 
-                if ( isSticked ) {
-                    item.el.className += ' ' + item.options.stuckClass;
-                }
+            if ( isSticked ) {
+                item.el.className += ' ' + item.options.stuckClass;
             }
 
             style += 'margin-left:-' + ( scrollLeft - item.style.margin.left ) + 'px;';
