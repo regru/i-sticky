@@ -128,8 +128,9 @@ Copyright (c) 2016 REG.RU LLC
 <a name="changelog"></a>
 ## Changelog
 
-- 2016-11-07 2.2.1 fixes
-- 2016-11-07 2.2.0 `stuckClass` option.
+- 2016-11-08 2.2.2 transfering project to github/regru
+- 2016-11-07 2.2.1 fixes. By @DesTincT
+- 2016-11-07 2.2.0 `stuckClass` option. By @DesTincT
 - 2016-03-26 2.1.0 `fixWidth` option.
 - 2015-12-14 2.0.0 Rewritten to support both `top` & `bottom` at the same time. New `force` and `debug` options. `holderAutoHeight` defaults to `true`.
 - 2015-06-15 1.1.8 Min-width issue. By @anagami.
