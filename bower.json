@@ -2,10 +2,11 @@
   "name": "i-sticky",
   "main": "i-sticky.js",
   "version": "2.2.1",
-  "homepage": "https://github.com/podkot/i-sticky",
+  "homepage": "https://github.com/regru/i-sticky",
   "authors": [
     "podkot <podkot@gmail.com>",
-    "anagami"
+    "anagami",
+    "DesTincT"
   ],
   "description": "position: sticky jQuery plugin / polyfill",
   "keywords": [

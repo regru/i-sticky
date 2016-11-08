@@ -1,6 +1,6 @@
 /* !
  * "position: sticky" jQuery plugin / polyfill
- * https://github.com/podkot/i-sticky
+ * https://github.com/regru/i-sticky
  * License: MIT
  */
 ( function( $ ) {
