@@ -9,6 +9,7 @@
 - [Methods](#methods)
 - [Options](#options)
 - [TODO](#todo)
+- [Мigration from 2.2.5 and below](#мigration-from-225-and-below)
 - [License](#license)
 - [Contributors](#contributors)
 - [Examples in the wild](#examples-in-the-wild)
@@ -40,7 +41,6 @@ You should write CSS rules by yourself, as you normally would. For example:
 ```css
 /* sticky element */
 .i-sticky {
-    position: relative;
     position: -webkit-sticky;
     position: sticky;
     top: 0;
@@ -94,12 +94,17 @@ $('.i-sticky').iSticky({
 <a name="todo"></a>
 ## TODO
 
-- Position:sticky should not work if one of ancestors has overflow (auto/scroll/hidden) or overflow-x/overflow-y styles.
+- Position:sticky should not work if one of ancestors has overflow (auto/scroll/hidden) or overflow-x/overflow-y styles (Safari's behavior).
 - Position:sticky should work as position:relative on table element.
-- Plugin should set position:relative to stiky's parent.
+- Sticky thead/tfoot.
+- Plugin should set position:relative to sticky's parent.
 - Margin-top & margin-bottom support.
 - Crossbrowser testing, including native support tests and comparison with the plugin's behavior.
 
+<a name="мigration-from-225-and-below"></a>
+## Мigration from 2.2.5 and below
+
+Remove `position:relative` rule from all your sticky elements (position only with `-webkit-stiky` and `sticky`). Then recheck everything and ajust wrapper styles when needed.
 
 <a name="license"></a>
 ## License
@@ -128,6 +133,7 @@ MIT
 <a name="changelog"></a>
 ## Changelog
 
+- 2016-11-12 3.0.0 position:static in home state (was position:relative). fixWidth is enabled by default.
 - 2016-11-12 2.2.5 fix: fixWidth option is back.
 - 2016-11-12 2.2.4 fixes.
 - 2016-11-08 2.2.3 bugfix. By @DesTincT.

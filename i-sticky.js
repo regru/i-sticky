@@ -72,7 +72,7 @@
                 holderClass      : 'i-sticky__holder',
                 holderAutoHeight : true,
                 debug            : false,
-                fixWidth         : false,
+                fixWidth         : true,
                 stuckClass       : '',
             }, methodOrOptions ),
             selector = this.selector;
@@ -111,7 +111,7 @@
                 parent : this.parentElement,
                 holder : this.nextSibling,
                 style  : {
-                    home    : 'position:relative;top:' + topCSSstring + ';bottom:' + bottomCSSstring + ';',
+                    home    : 'position:static;',
                     top     : undefined,
                     bottom  : undefined,
                     current : '',
@@ -222,8 +222,8 @@
                         parent       : parentOffset.top,
                         home         : homeOffset.top - topPx,
                         under        : parentOffset.top + item.parent.offsetHeight - height - topPx,
-                        parentBottom : parentOffset.top + height - bottomPx,
-                        homeBottom   : homeOffset.top + height - bottomPx,
+                        parentBottom : parentOffset.top + height + bottomPx,
+                        homeBottom   : homeOffset.top + height + bottomPx,
                     };
 
             for ( index in classes ) {
@@ -258,7 +258,9 @@
                 item.el.className += ' ' + item.options.stuckClass;
             }
 
-            style += 'margin-left:-' + ( scrollLeft - item.style.margin.left ) + 'px;';
+            if ( isStuck ) {
+                style += 'margin-left:-' + ( scrollLeft - item.style.margin.left ) + 'px;';
+            }
 
             if ( item.options.fixWidth ) {
                 style += 'width:' + ( isStuck ? item.holder.offsetWidth + 'px;' : 'auto;' );
