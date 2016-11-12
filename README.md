@@ -104,7 +104,7 @@ $('.i-sticky').iSticky({
 <a name="мigration-from-225-and-below"></a>
 ## Мigration from 2.2.5 and below
 
-Remove `position:relative` rule from all your sticky elements (position only with `-webkit-stiky` and `sticky`). Then recheck everything and ajust wrapper styles when needed.
+Remove `position:relative` rule from all your sticky elements (position only with `-webkit-stiky` and `sticky`). Then recheck everything and adjust wrapper styles when needed.
 
 <a name="license"></a>
 ## License
