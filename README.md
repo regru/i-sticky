@@ -71,7 +71,7 @@ $('.i-sticky').iSticky('unstick');
 - `force`: applies the plugin even if the browser has native position:sticky support. May be useful for testing.
 - `debug`: writes some info to browser's console.
 - `fixWidth`: copies parent's width.
-- `stuckClass`: class added when sticked
+- `stuckClass`: class added when stuck.
 
 Example with options:
 
@@ -128,6 +128,7 @@ MIT
 <a name="changelog"></a>
 ## Changelog
 
+- 2016-11-12 2.2.5 fix: fixWidth option is back.
 - 2016-11-12 2.2.4 fixes.
 - 2016-11-08 2.2.3 bugfix. By @DesTincT.
 - 2016-11-08 2.2.2 transfering project to github/regru.

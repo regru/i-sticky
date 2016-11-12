@@ -72,6 +72,8 @@
                 holderClass      : 'i-sticky__holder',
                 holderAutoHeight : true,
                 debug            : false,
+                fixWidth         : false,
+                stuckClass       : '',
             }, methodOrOptions ),
             selector = this.selector;
 
@@ -120,6 +122,7 @@
                 options : {
                     holderClass      : options.holderClass,
                     holderAutoHeight : options.holderAutoHeight,
+                    fixWidth         : options.fixWidth,
                     stuckClass       : options.stuckClass || '',
                 },
             };
@@ -251,12 +254,18 @@
                 item.holder.style.display = isStuck ? 'block' : 'none';
             }
 
-            if ( isStuck ) {
+            if ( isStuck && item.options.stuckClass ) {
                 item.el.className += ' ' + item.options.stuckClass;
             }
 
             style += 'margin-left:-' + ( scrollLeft - item.style.margin.left ) + 'px;';
-            style += 'min-width:' + ( isStuck ? item.holder.offsetWidth + 'px;' : 'auto;' );
+
+            if ( item.options.fixWidth ) {
+                style += 'width:' + ( isStuck ? item.holder.offsetWidth + 'px;' : 'auto;' );
+            }
+            else {
+                style += 'min-width:' + ( isStuck ? item.holder.offsetWidth + 'px;' : 'auto;' );
+            }
 
             if ( style !== item.style.current ) {
                 item.el.setAttribute( 'style', style );
