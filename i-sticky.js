@@ -109,13 +109,13 @@
                 parent : this.parentElement,
                 holder : this.nextSibling,
                 style  : {
-                    home      : 'position:relative;top:' + topCSSstring + ';bottom:' + bottomCSSstring + ';',
-                    top       : undefined,
-                    bottom    : undefined,
-                    current   : '',
-                    height    : 0,
-                    isSticked : false,
-                    margin    : { left: parseInt( $this.css('margin-left'), 10 ) },
+                    home    : 'position:relative;top:' + topCSSstring + ';bottom:' + bottomCSSstring + ';',
+                    top     : undefined,
+                    bottom  : undefined,
+                    current : '',
+                    height  : 0,
+                    isStuck : false,
+                    margin  : { left: parseInt( $this.css('margin-left'), 10 ) },
                 },
                 options : {
                     holderClass      : options.holderClass,
@@ -205,12 +205,12 @@
                 var item         = stickies[i],
                     height       = item.el.offsetHeight,
                     parentOffset = getOffset( item.parent ),
-                    homeOffset   = item.style.isSticked ? getOffset( item.holder ) : getOffset( item.el ),
+                    homeOffset   = item.style.isStuck ? getOffset( item.holder ) : getOffset( item.el ),
                     topPx        = item.style.top ? item.style.top.px : 0,
                     bottomPx     = item.style.bottom ? item.style.bottom.px : 0,
 
                     style        = item.style.home,
-                    isSticked    = true,
+                    isStuck      = true,
                     classes      = item.el.className.split(' '),
                     index        = 0,
                     points       = {
@@ -242,27 +242,27 @@
                 style = item.style.top.opposite;
             }
             else {
-                isSticked = false;
+                isStuck = false;
             }
 
-            if ( item.style.isSticked !== isSticked ) {
-                item.holder.style.display = isSticked ? 'block' : 'none';
+            if ( item.style.isStuck !== isStuck ) {
+                item.holder.style.display = isStuck ? 'block' : 'none';
             }
 
-            if ( isSticked ) {
+            if ( isStuck ) {
                 item.el.className += ' ' + item.options.stuckClass;
             }
 
             style += 'margin-left:-' + ( scrollLeft - item.style.margin.left ) + 'px;';
-            style += 'min-width:' + ( isSticked ? item.holder.offsetWidth + 'px;' : 'auto;' );
+            style += 'min-width:' + ( isStuck ? item.holder.offsetWidth + 'px;' : 'auto;' );
 
             if ( style !== item.style.current ) {
                 item.el.setAttribute( 'style', style );
-                item.style.isSticked = isSticked;
-                item.style.current   = style;
+                item.style.isStuck = isStuck;
+                item.style.current = style;
             }
 
-            if ( item.options.holderAutoHeight && isSticked && height != item.style.height ) {
+            if ( item.options.holderAutoHeight && isStuck && height != item.style.height ) {
                 item.holder.style.height = height + 'px';
                 item.style.height = height;
             }
