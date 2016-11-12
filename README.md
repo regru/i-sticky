@@ -70,7 +70,7 @@ $('.i-sticky').iSticky('unstick');
 - `holderAutoHeight`: when true, the plugin will recalculate placeholder's height. Otherwise, your CSS should define it. Defaults to `true`.
 - `force`: applies the plugin even if the browser has native position:sticky support. May be useful for testing.
 - `debug`: writes some info to browser's console.
-- `fixWidth`: copies parent's width.
+- `fixWidth`: copies parent's width. Enabled by default.
 - `stuckClass`: class added when stuck.
 
 Example with options:
