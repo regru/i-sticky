@@ -17,7 +17,7 @@
         requestAnimationFrame = window.requestAnimationFrame
             || window.webkitRequestAnimationFrame
             || window.mozRequestAnimationFrame,
-        id        = 0,
+        idCounter = 0,
         stickies  = [],
         methods   = { unstick : function() {
             var currentId = $( this ).data('sticky-id'),
@@ -77,7 +77,7 @@
 
         return this.each( function() {
             var $this = $( this ),
-                id    = 'sticky-' + ++id,
+                id    = 'sticky-' + ++idCounter,
                 topCSSstring,
                 bottomCSSstring,
                 item;
