@@ -163,7 +163,9 @@
             doc = elem && elem.ownerDocument;
 
         if ( !doc ) {
-            throw new Error('i-sticky: no element.ownerDocument defined');
+            if ( options.debug ) {
+                console.error( 'i-sticky: no element.ownerDocument defined' );
+            }
 
             return;
         }
