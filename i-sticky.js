@@ -13,6 +13,8 @@
         lastKnownScrollTop   = 0,
         lastKnownScrollLeft  = 0,
 
+        affectedChromeVersions = [ '56' ],
+
         // requestAnimationFrame may be prefixed
         requestAnimationFrame = window.requestAnimationFrame
             || window.webkitRequestAnimationFrame
@@ -45,12 +47,14 @@
             return this;
         } };
 
-    for ( var i = 0, l = prefixTestList.length; i < l; i++ ) {
-        stickyTestElement.setAttribute( 'style', 'position:' + prefixTestList[i] + 'sticky' );
+    if ( !checkIfBrowserAffectedWithBug() ) {
+        for ( var i = 0, l = prefixTestList.length; i < l; i++ ) {
+            stickyTestElement.setAttribute( 'style', 'position:' + prefixTestList[i] + 'sticky');
 
-        if ( stickyTestElement.style.position !== '' ) {
-            hasNativeSupport = true;
-            break;
+            if ( stickyTestElement.style.position !== '' ) {
+                hasNativeSupport = true;
+                break;
+            }
         }
     }
 
@@ -322,6 +326,18 @@
 
         updateScrollPos();
         areWindowEventsAttached = true;
+    }
+
+    function checkIfBrowserAffectedWithBug() {
+
+        if ( !window.chrome ) {
+
+            return false;
+        }
+
+        var matches = /Chrom(e|ium)\/(\d+)/.exec( navigator.appVersion );
+
+        return matches && ~affectedChromeVersions.indexOf( matches[ 2 ] );
     }
 
     if ( !hasNativeSupport ) {
