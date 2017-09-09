@@ -9,7 +9,7 @@
 - [Methods](#methods)
 - [Options](#options)
 - [TODO](#todo)
-- [Мigration from 2.2.5 and below](#мigration-from-225-and-below)
+- [Migration from 2.2.5 and below](#migration-from-225-and-below)
 - [License](#license)
 - [Contributors](#contributors)
 - [Examples in the wild](#examples-in-the-wild)
@@ -101,8 +101,8 @@ $('.i-sticky').iSticky({
 - Margin-top & margin-bottom support.
 - Crossbrowser testing, including native support tests and comparison with the plugin's behavior.
 
-<a name="мigration-from-225-and-below"></a>
-## Мigration from 2.2.5 and below
+<a name="migration-from-225-and-below"></a>
+## Migration from 2.2.5 and below
 
 Remove `position:relative` rule from all your sticky elements (position only with `-webkit-stiky` and `sticky`). Then recheck everything and adjust wrapper styles when needed.
 
@@ -133,6 +133,8 @@ MIT
 <a name="changelog"></a>
 ## Changelog
 
+- 2017-09-09 3.0.1 package.json
+- 2017-02-10 2.2.6 force unsupported state for chrome 56. By @shifteee
 - 2016-11-12 3.0.0 position:static in home state (was position:relative). fixWidth is enabled by default.
 - 2016-11-12 2.2.5 fix: fixWidth option is back.
 - 2016-11-12 2.2.4 fixes.

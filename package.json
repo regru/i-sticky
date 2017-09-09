@@ -1,0 +1,19 @@
+{
+  "name": "i-sticky",
+  "version": "3.0.1",
+  "description": "\"position: sticky\" jQuery plugin / polyfill.",
+  "main": "i-sticky.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/regru/i-sticky.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/regru/i-sticky/issues"
+  },
+  "homepage": "https://github.com/regru/i-sticky#readme"
+}
