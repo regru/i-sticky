@@ -133,6 +133,7 @@ MIT
 <a name="changelog"></a>
 ## Changelog
 
+- 2017-09-09 3.0.2 cleanup
 - 2017-09-09 3.0.1 package.json
 - 2017-02-10 2.2.6 force unsupported state for chrome 56. By @shifteee
 - 2016-11-12 3.0.0 position:static in home state (was position:relative). fixWidth is enabled by default.

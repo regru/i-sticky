@@ -333,13 +333,10 @@
     function checkIfBrowserAffectedWithBug() {
 
         if ( !window.chrome ) {
-
             return false;
         }
 
         var matches = /Chrom(e|ium)\/(\d+)/.exec(navigator.appVersion);
-
-        console.log(matches[ 2 ], ~affectedChromeVersions.indexOf( matches[ 2 ] ))
 
         return matches && ~affectedChromeVersions.indexOf( matches[ 2 ] );
     }
