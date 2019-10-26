@@ -1,6 +1,6 @@
 {
   "name": "i-sticky",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "\"position: sticky\" jQuery plugin / polyfill.",
   "main": "i-sticky.js",
   "directories": {
